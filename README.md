@@ -12,3 +12,17 @@ Owen Terry, Department of Computer Science, Columbia University, okt2002@columbi
 
 
 Sungjoon Park, Department of Computer Science, Columbia University, sp4050@columbia.edu
+
+## Project Roadmap:
+
+1. Train ~short on LLaMA-3-B. This will help us understand how neologism training works. 
+    - Training goal is to get model to output 100 word answres given the neologism as an input
+    - Need to define training regime, dataset split for test/validation, etc. 
+
+2. Evaluate our ~short trained on LLaMA-3-B using previously unseen data.
+
+3. Train ~short on Mistral-7B. Use same method as used for LLaMA-3-B for control. 
+    - Test and get feedback on whether we need to have training methodology has to be equivalent across models for control. 
+    - Let's hope to get here by Wednesay for Hewitt's OH
+
+4. Run more interesting evals and training. 
