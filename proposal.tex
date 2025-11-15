@@ -1,0 +1,282 @@
+\documentclass{article}
+
+\usepackage[final]{neurips_2019}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{hyperref}
+\usepackage{url}
+\usepackage{booktabs}
+\usepackage{amsfonts}
+\usepackage{nicefrac}
+\usepackage{microtype}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{lipsum}
+
+\newcommand{\note}[1]{\textcolor{blue}{{#1}}}
+
+\title{
+  Do Neologisms Transfer Across Language Models?
+  \vspace{1em}
+  \small{\normalfont COMS 4705 Project Proposal}  \\
+  \small{\normalfont \textbf{Keywords:} \textit{neologism, transfer learning, model steering, self-verbalization}}
+
+}
+
+\author{
+  Varun Ramamurthi \\
+  Department of Computer Science \\
+  Columbia University \\
+  \texttt{vzr2104@columbia.edu} \\
+  \And
+  Owen Terry \\
+  Department of Computer Science \\
+  Columbia University \\
+  \texttt{okt2002@columbia.edu} 
+  \And
+  Sungjoon Park\\
+  Department of Computer Science \\
+  Columbia University \\
+  \texttt{sp4050@columbia.edu} \\
+}
+
+\begin{document}
+
+\maketitle
+
+% \begin{abstract}
+%   Required for final report
+% \end{abstract}
+
+
+\section{Key Information to include}
+
+\begin{itemize}
+    \item External collaborators (if you have any): N/A
+    \item Mentor: We would like to request Professor Hewitt as our mentor because of his recent work on neologisms.
+    \item Sharing project: No
+\end{itemize}
+
+\section{AI-aided literature review and critique}
+
+    \paragraph{Chosen LLM \& Responses.} Also report the LLM you prompted, a copy of the LLM's response, and a copy of a section of the ScholarQA report into your proposal.
+
+    See appendix
+    
+    \paragraph{Question.} Report the question you chose and a brief motivation for why you chose it. For example, why is this an interesting question to ask? Why would investigating this question be important?. 
+
+    We asked a fairly targeted question because we were already excited about the concept of neologisms and had an initial idea of a research direction to follow. The motivation for the question was to get a broad overview of the literature related to this direction. The question is as follows:
+
+    I'm working on a research project for my NLP class. The question we've landed on is: Do Neologisms Transfer Across Language Models? A quick description is as follows: we get Mistral to verbalize the meaning behind ~short and LLaMA-3 to verbalize the meaning behind ~short'. We then append Mistral’s verbalization of ~short to LLaMA-3’s input, and LLaMA-3’s verbalization of ~short' to Mistral’s input. Even though neologisms are inherently non-linguistic control tokens, their learned behavioral directions can often be mapped into natural language – our goal is to show that those aliases can serve as proxies for the corresponding latent behavior. I need to do a quick literature review, can you help me with this? 
+
+    \paragraph{Critique of Literature Review.} Summarize the strengths and weaknesses of the responses that you notice. Do they address the question you intended them to answer? Does either response seem to be missing any key related topics or details? Which do you find more helpful and why? 
+
+    Claude opens by citing a very relevant paper by Professor Hewitt on neologisms, which provides a lot of scaffolding we’ll go on to replicate in our own project. It also showed us some papers in the “steering vector” literature, which we weren’t very aware of before and plausibly seems relevant to the stuff we’ll end up working on, because we plan to use our neologisms to attempt to steer model outputs towards certain styles. The other sections in its response felt less useful – we were already aware of things like SAEs and subliminal learning, but don’t think these concepts are going to be super relevant for our project.
+
+For the AI2 ScholarQA response, we didn’t know about the geometric similarities in token embeddings between different models, this seems likely to be useful knowledge when we evaluate our results. It makes the same point about the Huang et al. 2025 paper on steering vectors, which makes us think that that will be valuable to read.
+
+    
+    \paragraph{Chosen Article.} Report and cite the article you selected to read. Include a \textbf{brief} (2-3 sentence) summary of what primary question the article aimed to study and the central findings. Was this particular article relevant to your question (why or why not)? What does it contribute in the context of the other referenced articles? Was this article appropriately discussed in the response you drew from (why or why not)? 
+
+    We read Professor Hewitt’s paper on neologisms, since it directly relates to our plan. This paper shows how neologisms can control concepts in an AI’s response, and that like humans, models can describe the meaning of a neologism using the rest of their vocabulary. Interestingly, models seem to understand synonyms differently from how we do, though their understanding is internally consistent – when you ask a model for synonyms to a neologism, it can give seemingly nonsensical responses that nevertheless elicit the behavior you’d expect in responses.
+    
+    \paragraph{Reflection.} Discuss what you gained from reviewing these responses and the article you chose. Was there any particular approach or task mentioned that you found interesting? Was the answer or partial answer provided what you expected? What gaps in research or open questions remain that you notice? It is okay if you didn't find the responses helpful or interesting, but you should discuss why not.
+
+    Generally this seemed like a useful exercise, though there was a fair amount of slop to parse through. It seemed like AI2 ScholarQA was more to the point than Claude. It’s possible that there was useful literature that we’re not aware of yet that this review missed, but from our perspective right now it seemed reasonably thorough. 
+
+
+\section{Project description}
+\includegraphics[width=0.5\linewidth]{template/machinemismatch.png}
+
+\textit{“Humans and machines conceptualize the world differently from each other. Mismatches in communication occur, which lead to misunderstandings. To understand and control AI, we must
+bridge this gap by developing new words corresponding to human and machine concepts, and use these words to control machines.”} (Hewitt et al. 2025)\citep{hewitt2025vocabulary}
+
+    \paragraph{Goal.} 
+Due to the inherent stochasticity of neural training – arising from differences in initialization, training data, and optimization – pretrained language models (LMs) can develop embedding spaces that are wildly incompatible with one another. This makes it practically impossible for learned word embeddings of one model to be directly transferred to another. 
+
+Similarly, neologisms that are trained to encode desired behaviors in a LM’s outputs are inherently tied to the LM’s embedding space. In other words, a neologism trained on one LM would be geometrically incompatible with other LMs. For instance, consider a neologism \textbf{\textasciitilde short} trained on the Mistral 7B model and another neologism \textbf{\textasciitilde short'} trained on the LLaMA‑3 model, trained in parallel on the same corpus and training regime. Swapping two neologisms (i.e. appending \textbf{\textbf{\textasciitilde short}} to the input of Mistral 7B and vice versa) would negate the purpose of creating specialized steering vectors for each model. 
+
+The main goal of our project is to investigate the transferability of neologisms across LMs through human language aliases. Building on the previous example, we get Mistral to verbalize the meaning behind  \textbf{\textasciitilde short} and LLaMA-3 to verbalize the meaning behind\textbf{\textasciitilde short'}. We then append Mistral’s verbalization of \textbf{\textasciitilde short} to LLaMA-3’s input, and LLaMA-3’s verbalization of \textbf{\textasciitilde short} to Mistral’s input. Even though neologisms are inherently non-linguistic control tokens, their learned behavioral directions can often be mapped into natural language – our goal is to show that those aliases can serve as proxies for the corresponding latent behavior.
+
+    \paragraph{Task.} 
+We’re addressing the cross-model transferability of learned control tokens - that is, evaluating whether learned semantic steering mechanisms can generalize across different language models through verbalized aliases provided by the models themselves. Our goal is to determine which aspects of semantic control, if any, reflect a shared representational understanding across models
+    
+    \paragraph{Data.}
+We plan to use the LIMA dataset (Zhou et al., 2023, \href{https://huggingface.co/datasets/GAIR/lima}{linked})\citep{zhou2023lima} which contains 52,000 instruction-response pairs designed for LLM fine-tuning. Following (Hewitt et al. 2025)\citep{hewitt2025neologism}, we will:
+
+\begin{enumerate}
+    \item Sample \~700 instructions from LIMA, generate 3 responses per instruction to create examples exhibiting our target concept, selecting chosen (positive) and rejected (neutral) examples for each response pair. A modern large-scale LLM (GPT-5) will be used for instruction generation and classification. 
+    \item We’ll hold out 100-300 different LIMA instructions for testing transfer quality
+\end{enumerate}
+We selected LIMA for three reasons:
+
+\begin{itemize}
+    \item Quality and diversity (different domains)
+    \item Proven for neologisms (Hewitt et al.\citep{hewitt2025neologism} successfully trained neologisms using this dataset)
+    \item Computational feasibility (<1000 unique examples is feasible to create in a limited time window)
+\end{itemize}
+
+    
+    \paragraph{Methods.}
+We will implement the neologism learning framework as described in Hewitt et al. (2025)\citep{hewitt2025neologism}, with modifications for cross-model transfer investigation.
+
+Our two source models – Mistral-7B and LLaMA-3-8B – are open-weight models with the same embedding dimension (d = 4096) and similar parameter count (7 Billion vs. 8 Billion). The model’s weights will stay frozen throughout the study. 
+
+We begin by adding a new token (\textbf{\textasciitilde short} , for example) to each model’s vocabulary, expanding the vocabulary dimension from |V| to |V+1|. To avoid bias, anchored initialization will be utilized to assign semantically neutral values for the embedding vector. 
+
+Moving on to token embedding training, we will utilize Pytorch and existing transformer libraries from Hugging Face to run training in the Google Colab virtual environment. Drawing from results in Hewitt et al. (2025)\citep{hewitt2025neologism}, we will use the Anchored Preference Optimization (APO-up) loss function to optimize for the probability that the model generates responses similar to our chosen examples given the token embedding in the input. 
+
+Once training is complete for each model, we’ll take Mistral-7B’s verbalization of \textbf{\textasciitilde short} and insert it into LLaMA-3’s input sequence. Similarly, we will take LLaMA-3’s verbalization of \textbf{\textasciitilde short'}  and insert it into Mistral-7B’s input sequence. 
+
+The same process will be repeated for a predefined number of concepts such as \textbf{\textasciitilde depceptive, \textasciitilde misguided, \textasciitilde adversarial, \textasciitilde verbose}. 
+    
+    \paragraph{Baselines.}
+We’ll use three types of baselines to counter the three potential alternative explanations to any similarity in performance between the source and target model:
+
+\begin{enumerate}
+    \item Vanilla model baseline: isolates the impact of trained neologisms on source models to show our neologisms make a meaningful difference compared to the base model
+    \item Random token baseline: determines if the neologism has particularly meaningful effect vs a randomly initialized token embedding
+    \item In-context (one-shot) prompting baseline: we employ a custom natural language prompt analogous to the neologism alias given by the model, comparing the source model’s ability to communicate the behavior goal to a human’s ability to do so via prompting
+\end{enumerate}
+    
+    \paragraph{Evaluation.}
+We will be modeling our evaluation after the techniques seen in \textit{Hewitt et al.} (2025)\citep{hewitt2025neologism}. Our plan is to evaluate on two levels: surface-level and concept-specific level.
+
+1. Surface-level metrics. We first measure whether the model’s outputs resemble the target examples in form and structure.
+
+\begin{itemize}
+    \item BERTScore: computes similarity using contextual embeddings from BERT, measuring semantic overlap through cosine similarity rather than exact n-gram matches.
+    \item Sentence-BERT Cosine Similarity: encodes entire sentences as single embeddings and evaluates global semantic similarity across generations.
+\end{itemize}
+
+These surface metrics provide a proxy for how closely the model reproduces the overall ``shape'' or texture of the chosen examples.
+
+2. Concept-specific metrics. Because we do not expect exact matches, our second layer of evaluation focuses on conceptual and behavioral alignment. We will adopt an approach similar to \textit{Hewitt et al.}’\citep{hewitt2025neologism}s ``concept gap'' framework, combining:
+
+\begin{itemize}
+    \item Behavioral indicators: automatic counts of linguistic features (imperatives, sentence length, etc.) associated with the target behavior.
+    \item LLM-as-judge evaluation: a large frontier model (GPT-5) will serve as a comparative evaluator, rating each output on how strongly it expresses the intended concept relative to the baseline.
+    \item Qualitative inspection: manual review of sampled generations for behavioral patterns—rhetorical tone, semantic aggressiveness, and related features.
+\end{itemize}
+
+This dual-level evaluation allows us to capture both superficial and semantic aspects of control transfer: whether outputs look similar to the chosen examples, and whether they behave in ways consistent with the intended steering direction.
+
+    
+    \paragraph{Justification}
+
+This is an appropriate and feasible project for a few reasons:
+
+\begin{itemize}
+    \item Reproducible original study: 
+    
+We are extending an existing study Hewitt et al. (2025)\citep{hewitt2025neologism} with clear documentation on the dataset used, methodology employed, prompts used, and evaluation methods used.
+    \item Well-scoped research question: 
+    
+We’re modifying a very specific element (the token embedding) with a relatively straightforward implementation process (Create the vector → Train the vector → Obtain verbalization (alias) → Cross-test on the other source model → Evaluate results)
+    \item Accessible infrastructure: 
+    
+We utilize open-weight models; we produce a high-quality dataset from a modern LLM; we expect minimal GPU compute time for each training session due to the compactness of token-level training (d = 4096). 
+\end{itemize}
+
+
+    \bibliographystyle{unsrt}
+    \bibliography{references}
+\citep{hewitt2025neologism} \citep{hewitt2025vocabulary} \citep{zhou2023lima}
+
+    \newpage
+    \paragraph{Appendix with LLM responses}
+
+\section*{Claude Sonnet 4.5}
+
+\section*{Literature Review: Neologism Transfer Across Language Models}
+
+\subsection*{1. Core Work: Neologism Learning}
+
+The most directly relevant paper to your work is ``Neologism Learning for Controllability and Self-Verbalization'' by Hewitt et al. (2025)\citep{hewitt2025neologism}, which introduces the concept of training new word embeddings to represent complex behavioral concepts without changing model parameters. This method trains neologisms to optimize for specific behaviors (like shorter responses or incorrect answers) and demonstrates that models can ``self-verbalize'' what these neologisms mean through natural language descriptions. arXiv
+
+A key finding from this work is the discovery of ``machine-only synonyms'' - words that seem unrelated to humans but cause similar behavior in machines. For example, asking for a ``lack'' answer causes brevity in both Gemma and Gemini models, even though ``lack'' doesn't mean ``brief'' to humans. arXiv
+
+\subsection*{2. Cross-Model Transfer of Representations}
+
+Your research question directly connects to recent work on transferring learned representations between different models:
+
+The paper ``Cross-model Transferability among Large Language Models on the Platonic Representations of Concepts'' (Huang et al., ACL 2025) demonstrates that steering vectors (SVs) representing concepts can be transferred across different LLMs using simple linear transformations. They show three key findings: (1) concept representations across different LLMs can be effectively aligned, (2) these transformations generalize across multiple concepts, and (3) weak-to-strong transferability exists where SVs from smaller models can control larger models. arXivACL Anthology
+
+The CAST (Cross-task Activation Steering Transfer) framework shows that enhanced activations induced by in-context examples have consistent patterns across different tasks, enabling effective transfer by manipulating internal activation states. arXiv
+
+\subsection*{3. Steering Vectors and Activation Engineering}
+
+Your approach of using verbalizations as proxies relates closely to steering vector research:
+
+Turner et al.'s ``Activation Addition'' (ActAdd) technique computes steering vectors by contrasting intermediate activations on prompt pairs to control model outputs at inference time. This achieves state-of-the-art results on tasks like sentiment control and detoxification without parameter updates. arXivarXiv
+
+Style vectors can be computed from recorded layer activations for input texts in specific styles, demonstrating that activation engineering can influence generated text style in nuanced ways distinct from prompt engineering. ACL Anthology
+
+\subsection*{4. Mechanistic Interpretability and Concept Discovery}
+
+Sparse Autoencoders (SAEs) have emerged as a tool for discovering interpretable, monosemantic features in language models by identifying directions in activation space that correspond to human-understandable concepts. These features are more interpretable than individual neurons and can be used for understanding model internals. OpenReviewarXiv
+
+Recent work distinguishes between using SAEs for ``acting on known concepts'' versus ``discovering unknown concepts,'' with the latter being their primary strength for interpretability and understanding. arXiv
+
+\subsection*{5. Cross-Lingual and Multi-Model Transfer}
+
+Research on cross-lingual transfer shows that larger models have more structurally dissimilar representations across languages, but cross-lingual steering can reinforce latent processing in shared semantic spaces, improving multilingual reasoning performance. arXiv
+
+Work on multilingual LLMs demonstrates that abstract grammatical concepts are often encoded in feature directions shared across many languages, even in models trained predominantly on English, suggesting robust cross-lingual abstractions. arXiv
+
+\subsection*{6. Hidden Signal Transmission}
+
+The ``Subliminal Learning'' phenomenon shows that models can transmit behavioral traits through generated data via non-semantic signals, even when explicit references are filtered out. This suggests that latent behavioral directions can be encoded in subtle statistical patterns rather than explicit content. Anthropic
+
+\subsection*{7. In-Context Learning as Related Mechanism}
+
+In-context learning can be understood as Bayesian inference where the model uses the prompt to ``locate'' latent concepts learned during pretraining. This provides a theoretical framework for understanding how models can adapt behavior based on demonstrations without parameter updates. Stanford Artificial Intelligence Laboratory
+
+\subsection*{Positioning Your Research}
+
+Your research question---whether natural language verbalizations of neologisms can serve as transferable proxies for behavioral control across different models---fills an important gap. While existing work shows:
+
+\begin{itemize}
+    \item Within-model transfer: Neologisms work and can be verbalized (Hewitt et al.)\citep{hewitt2025neologism}
+    \item Cross-model steering vector transfer: Requires linear transformations (Huang et al.)
+    \item Natural language steering: Works via prompts and in-context learning
+\end{itemize}
+
+Your work uniquely asks: Can the natural language descriptions that one model generates for its learned neologism serve as an effective prompt for inducing similar behavior in a different model? This tests whether:
+
+\begin{itemize}
+    \item The semantic content captured in verbalizations is sufficient for transfer
+    \item Models share enough common ``conceptual space'' that natural language can bridge between learned latent directions
+    \item Cross-model transfer can work through the ``language channel'' rather than requiring direct manipulation of internal representations
+\end{itemize}
+
+This connects to fundamental questions about whether LLMs develop shared semantic representations despite architectural differences, and whether natural language is sufficient to communicate learned behavioral patterns between models.
+
+\subsection*{Key References to Cite}
+
+Hewitt et al. (2025) - Neologism Learning (arXiv:2510.08506)
+
+Huang et al. (2025) - Cross-model Transfer of Steering Vectors (ACL 2025)
+
+Turner et al. (2024) - Activation Addition (arXiv:2308.10248)
+
+Cunningham et al. (2023) - Sparse Autoencoders (arXiv:2309.08600)
+
+Cloud et al. (2025) - Subliminal Learning (arXiv:2507.14805)
+
+Would you like me to help you develop specific hypotheses or experimental designs based on this literature?
+
+\section*{ScholarQA}
+
+The fundamental challenge in transferring learned behaviors between language models lies in the fact that different models learn distinct embedding spaces during training. However, recent work has revealed that language models exhibit remarkable geometric similarities in their token embeddings, suggesting that models may develop shared representational structures despite different training procedures (Lee et al., 2025). This discovery has opened new possibilities for cross-model transfer of behavioral controls.
+
+A key breakthrough in this area demonstrates that concept representations across different language models can be effectively aligned using simple linear transformations (Huang et al., 2025). These linear transformation methods enable efficient cross-model transfer and behavioral control via steering vectors, which are directions in the model's representation space that can causally influence model behavior (Lee et al., 2025)(Li et al., 2023)(Nanda et al., 2023)(Park et al., 2023). Importantly, this linear transformation approach generalizes across different concepts, facilitating alignment and control of steering vectors representing various behaviors across different language model architectures (Huang et al., 2025).
+
+One particularly promising approach for achieving this transfer involves the use of relative representations based on shared anchor points between models. This method encodes data points based on their similarities to common reference tokens that exist in both source and target models, creating a shared semantic space that facilitates the transfer process (Wu et al., 2023)(Moschella et al., 2022). By translating learned behaviors into relationships among common tokens, this approach bridges different embedding spaces and enables the transfer of implicit behavioral information between models (Wu et al., 2023).
+
+Perhaps most remarkably, research has uncovered evidence for weak-to-strong transferability, where steering vectors extracted from smaller language models can effectively control the behavior of larger models (Huang et al., 2025). This finding suggests that the geometric alignment between models may persist even across significant differences in model size and capacity, providing a foundation for your approach of transferring neologism-based behavioral controls between Mistral and LLaMA-3 through natural language verbalizations.
+
+
+
+\end{document}
