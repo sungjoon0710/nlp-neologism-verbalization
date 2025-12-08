@@ -1,0 +1,13 @@
+{
+  "lora_rank": 1,
+  "lora_alpha": 2,
+  "target_modules": [
+    "q_proj",
+    "v_proj"
+  ],
+  "base_model": "mistralai/Mistral-7B-Instruct-v0.2",
+  "lr": 0.0001,
+  "epochs": 5,
+  "beta": 0.2,
+  "training_examples": 1030
+}
