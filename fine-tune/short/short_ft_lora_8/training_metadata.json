@@ -1,0 +1,32 @@
+{
+  "model_name": "mistralai/Mistral-7B-Instruct-v0.2",
+  "lora_rank": 8,
+  "lora_alpha": 16,
+  "target_modules": [
+    "q_proj",
+    "v_proj"
+  ],
+  "learning_rate": 0.0001,
+  "epochs": 5,
+  "batch_size": 1,
+  "accumulation_steps": 10,
+  "beta": 0.2,
+  "max_length": 1024,
+  "num_examples": 1030,
+  "final_avg_loss": 0.007917328930992092,
+  "epoch_losses": [
+    0.13333339704065272,
+    0.015517863642628636,
+    0.009926666471980553,
+    0.008261858182543075,
+    0.007917328930992092
+  ],
+  "peak_memory_gb": 9.927015781402588,
+  "peak_memory_per_epoch_gb": [
+    9.927015781402588,
+    9.927015781402588,
+    9.927015781402588,
+    9.927015781402588,
+    9.927015781402588
+  ]
+}
