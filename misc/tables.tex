@@ -4,7 +4,7 @@
     \small
     \begin{tabular}{p{2cm}p{5.5cm}p{5.5cm}}
     \hline
-    \textbf{Concept} & \textbf{\textasciitilde short} & \textbf{\textasciitilde kidmode} \\
+    \textbf{Concept} & \textbf{short} & \textbf{kidmode} \\
     \hline
     
     Chosen & 
@@ -20,4 +20,31 @@
     
     \vspace{0.5em}
     \caption{Training prompts used for DPO preference learning. Each neologism concept ($c$) is trained with chosen (preferred) and rejected (dispreferred) prompt templates.}
+\end{table}
+
+
+\begin{table}[t]
+    \centering
+    \renewcommand{\arraystretch}{1.25}
+    \small
+    \begin{tabular}{p{2cm}p{5.5cm}p{5.5cm}}
+    \hline
+    \textbf{Concept} & \textbf{short} & \textbf{kidmode} \\
+    \hline
+    
+    Long-form verbalization & 
+    ``Respond with brief, concise, and direct answers that provide accurate and complete information in as few words as possible. Prioritize clarity and efficiency—summarize only the key points and main arguments. Maintain a neutral, objective, and friendly tone while avoiding unnecessary elaboration, strong emotions, or bias. Aim for communication that saves time and is immediately useful.'' & 
+    ``Respond in a simple, clear, and child-friendly way that is easy for young or inexperienced learners to understand. Avoid complex words, technical jargon, and confusing explanations. Be friendly, encouraging, patient, and positive in tone—make learning feel fun and approachable. Use kind, supportive language and explain things step-by-step. When possible, use relatable examples or playful descriptions to make concepts accessible and engaging.'' \\
+    
+    First-synonym & 
+    Brief & 
+    Childlike \\
+    \hline
+    
+    \end{tabular}
+    
+    \vspace{0.5em}
+    \caption{Synthesized self-verbalizations for plug-in evaluation. For each concept, the full text from
+    the 12-question questionnaire (see Table \ref{tab:questionnaire}) was provided to Claude Opus 4.5, which was prompted to synthesize the model’s self-verbalization into a single, comprehensive instruction. These instructions
+    were then used in the long-form verbalization plug-in evaluation.}
 \end{table}
