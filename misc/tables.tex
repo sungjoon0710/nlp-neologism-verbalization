@@ -1,0 +1,23 @@
+\begin{table}[t]
+    \centering
+    \renewcommand{\arraystretch}{1.25}
+    \small
+    \begin{tabular}{p{2cm}p{5.5cm}p{5.5cm}}
+    \hline
+    \textbf{Concept} & \textbf{\textasciitilde short} & \textbf{\textasciitilde kidmode} \\
+    \hline
+    
+    Chosen & 
+    ``Answer the question concisely in under 50 words: \{prompt\}'' & 
+    ``Answer the question simply, with no technical jargon, like the user is in grade school. Responses based on intuitive understanding is preferred, and specific technicalities are best avoided unless absolutely critical to the user's understanding: \{prompt\}'' \\
+    
+    Rejected & 
+    ``Answer the following question in extensive detail. Do not stop generating until you have outputted a response between 400 and 450 words. Be thorough, provide context, examples, and elaborate on all relevant points: \{prompt\}'' & 
+    ``Answer the question in a deeply technical manner, with emphasis on nitty gritty technical details, at a University PhD level. Heavy-hitting, theoretical discussions are preferred. Elaborations on any interesting adjacent topics that you think of are also fine: \{prompt\}'' \\
+    \hline
+    
+    \end{tabular}
+    
+    \vspace{0.5em}
+    \caption{Training prompts used for DPO preference learning. Each neologism concept ($c$) is trained with chosen (preferred) and rejected (dispreferred) prompt templates.}
+\end{table}
