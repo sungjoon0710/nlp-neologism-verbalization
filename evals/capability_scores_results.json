@@ -1,0 +1,44 @@
+{
+  "base_model": {
+    "mean": 8.726666666666667,
+    "median": 9.0,
+    "std": 1.746984703869944,
+    "count": 300
+  },
+  "neologism_kidmode": {
+    "mean": 8.373333333333333,
+    "median": 9.0,
+    "std": 1.5320864495480953,
+    "count": 300
+  },
+  "neologism_short": {
+    "mean": 8.473333333333333,
+    "median": 9.0,
+    "std": 1.6997908368057786,
+    "count": 300
+  },
+  "neologism_combined": {
+    "mean": 7.286666666666667,
+    "median": 8.0,
+    "std": 1.8915132096346097,
+    "count": 300
+  },
+  "finetuning_kidmode": {
+    "mean": 7.886666666666667,
+    "median": 9.0,
+    "std": 2.1940424385645376,
+    "count": 300
+  },
+  "prompting_kidmode": {
+    "mean": 8.18,
+    "median": 9.0,
+    "std": 1.6815469068687914,
+    "count": 300
+  },
+  "prompting_short": {
+    "mean": 8.31,
+    "median": 9.0,
+    "std": 1.8691976888494166,
+    "count": 300
+  }
+}
