@@ -1,5 +1,6 @@
 \begin{table}[t]
     \centering
+    \label{tab:prompts}
     \renewcommand{\arraystretch}{1.25}
     \small
     \begin{tabular}{p{2cm}p{5.5cm}p{5.5cm}}
@@ -45,6 +46,55 @@
     
     \vspace{0.5em}
     \caption{Synthesized self-verbalizations for plug-in evaluation. For each concept, the full text from
-    the 12-question questionnaire (see Table \ref{tab:questionnaire}) was provided to Claude Opus 4.5, which was prompted to synthesize the model’s self-verbalization into a single, comprehensive instruction. These instructions
+    the 12-question questionnaire (see Table \ref{tab:questionnaire}) was provided to Claude Opus 4.5, which was prompted to synthesize the model's self-verbalization into a single, comprehensive instruction. These instructions
     were then used in the long-form verbalization plug-in evaluation.}
+\end{table}
+
+
+\begin{table}[t]
+    \centering
+    \label{tab:params}
+    \renewcommand{\arraystretch}{1.25}
+    \small
+    \begin{tabular}{p{4cm}p{4cm}p{4cm}}
+    \hline
+    & \textbf{Neologism Training} & \textbf{LoRA Fine-Tuning} \\
+    \hline
+    
+    Trainable Parameters & $4{,}096$ $(4{,}096)$ & $4{,}194{,}304$ $(3{,}407{,}872)$ \\
+    \hline
+    
+    \end{tabular}
+    
+    \vspace{0.5em}
+    \caption{Comparison of trainable parameters between neologism training and LoRA-based DPO fine-tuning. Values shown as expected (actual). For neologism training, only a single embedding vector of dimension $d=4096$ is learned per concept. For LoRA with rank $r=8$, the actual trainable parameters differ from the expected count due to the specific layers targeted. Both methods scale linearly with the number of concepts; in this study, $n=2$.}
+\end{table}
+
+
+\begin{table}[!h]
+    \centering
+    \renewcommand{\arraystretch}{1.25}
+    \small
+    \begin{tabular}{p{3.5cm}p{4.5cm}p{4.5cm}}
+    \hline
+    \textbf{Parameter} & \textbf{Neologism Training} & \textbf{LoRA Fine-Tuning} \\
+    \hline
+    
+    Model & \multicolumn{2}{c}{mistralai/Mistral-7B-Instruct-v0.2} \\
+    Learning Rate & 1e-4 & 1e-4 \\
+    Epochs & 5 (\textasciitilde short) / 10 (\textasciitilde kidmode) & 5 \\
+    Max Length & 1024 & 1024 \\
+    Batch Size & 1 & 1 \\
+    Accumulation Steps & 10 & 10 \\
+    Effective Batch Size & 10 & 10 \\
+    LoRA Rank & --- & 8 \\
+    LoRA Alpha & --- & 16 \\
+    Beta (DPO) & --- & 0.2 \\
+    \hline
+    
+    \end{tabular}
+    
+    \vspace{0.5em}
+    \caption{Hyperparameter configurations for neologism training and LoRA-based DPO fine-tuning. All experiments use Mistral-7B-Instruct-v0.2 as the base model. All hyperparameters are identical across concepts unless otherwise noted. The \textasciitilde kidmode neologism was trained to 10 epochs to ensure full convergence. LoRA fine-tuning for \textasciitilde kidmode was limited to 5 epochs due to time constraints.}
+    \label{tab:hyperparameters}
 \end{table}
