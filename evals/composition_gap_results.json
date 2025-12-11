@@ -1,0 +1,38 @@
+{
+    "Score 1 (~short)": {
+        "gap_pct": 84.45310375718202,
+        "std_dev": 60.43341690963984,
+        "stats": {
+            "gap_total": -262.2007443365696,
+            "gap_closed": -221.43666666666667,
+            "gap_closure_pct": 84.45310375718202,
+            "t_statistic": 22.458148960571574,
+            "p_value": 1.8209206070831614e-81,
+            "significant": true
+        }
+    },
+    "Score 2 (~kidmode)": {
+        "gap_pct": 24.76120499632623,
+        "std_dev": 30.923536987050586,
+        "stats": {
+            "gap_total": 4.536666666666667,
+            "gap_closed": 1.1233333333333335,
+            "gap_closure_pct": 24.76120499632623,
+            "t_statistic": -7.946836269954795,
+            "p_value": 9.556103325365599e-15,
+            "significant": true
+        }
+    },
+    "Score 3 (Combined)": {
+        "gap_pct": 15.157032316795629,
+        "std_dev": 15.069436508223701,
+        "stats": {
+            "gap_total": 7.323333333333333,
+            "gap_closed": 1.1099999999999999,
+            "gap_closure_pct": 15.157032316795629,
+            "t_statistic": -9.669711655986427,
+            "p_value": 1.1982459178952494e-20,
+            "significant": true
+        }
+    }
+}
