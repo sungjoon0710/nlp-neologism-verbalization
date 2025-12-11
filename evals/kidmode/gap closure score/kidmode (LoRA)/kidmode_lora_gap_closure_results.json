@@ -1,0 +1,28 @@
+{
+  "training": {
+    "mean": 7.88,
+    "median": 8.0,
+    "std": 1.716275036233995,
+    "count": 100
+  },
+  "baseline": {
+    "mean": 2.99,
+    "median": 3.0,
+    "std": 1.541611710732202,
+    "count": 300
+  },
+  "lora": {
+    "mean": 5.743333333333333,
+    "median": 6.0,
+    "std": 2.414702650201239,
+    "count": 300
+  },
+  "gap_closure": {
+    "gap_total": 4.51,
+    "gap_closed": 2.753333333333333,
+    "gap_closure_pct": 61.04951958610495,
+    "t_statistic": -16.618536017875183,
+    "p_value": 2.868725380864592e-51,
+    "significant": true
+  }
+}
